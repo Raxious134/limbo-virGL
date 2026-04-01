@@ -11,9 +11,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Build APK
-        run: chmod +x gradlew && ./gradlew assembleDebug
+        run: |
+          # Try to build from root or subfolder
+          chmod +x gradlew || chmod +x app/gradlew
+          ./gradlew assembleDebug || ./app/gradlew assembleDebug
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: Limbo-A16-Fixed
-          path: app/build/outputs/apk/debug/*.apk
+          path: "**/*.apk"
